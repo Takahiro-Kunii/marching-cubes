@@ -1,19 +1,9 @@
-//	受け取った f(x, y, z) 関数を使い、その戻り値をgridの値に加算する
-//	fに渡すx, y, zはgridの 0 〜 size 範囲を -1 〜 1 に写像させたものとする。
-//	gridを3次元配列と考えた場合のgrid[k][j][i]のk, j, iはそれぞれ空間座標のz, y, xに対応させる。
-function addFunction(grid, size, func) {
-	for (let k = 0; k < size; k++) {
-		for (let j = 0; j < size; j++) {
-			for (let i = 0; i < size; i++) {
-				let index = (size * size * k) + (size * j) + i;				
-				//	gridの 0 〜 size 範囲を -1 〜 1 に写像
-				let x = i * 2 / size - 1;
-				let y = j * 2 / size - 1;
-				let z = k * 2 / size - 1;
-				grid[index] += func(x, y, z);
-			}
-		}
-	}	
+//	mc.gridに濃度を設定
+function setupGrid(mc, f) {
+	for (let i = 0; i < mc.grid.length; i++) {
+		let pos = mc.position(i);	
+		mc.grid[i] = f(pos[0], pos[1], pos[2]);
+	}
 }
 
 window.onload = function (e) {
@@ -23,13 +13,13 @@ window.onload = function (e) {
 
 	//	マーチングキューブス法を実行するオブジェクト
 	let mc = new MarchingCubes(20, 0.0);
-	//	gridに濃度を設定
-	addFunction(mc.grid, mc.size, (x, y, z) => {
-		//	y = x^2 の式
-		//	return (x * x) - y;
-
-		//	半径0.5 原点を中心にした球体の式　
+	setupGrid(mc, (x, y, z) =>{
+		//	球体の原点を0,0,0とし半径を0.5としている これで、球体の表面が0になる
+		//		球体の式：半径^2 = (x - 原点x)^2 + (y - 原点y)^2 + (z - 原点z)^2 
 		return 0.5 - Math.sqrt(x * x + y * y + z * z);
+
+		//	y = x^2 の式を使うなら
+		//	return (x * x) - y;
 	});
 	
 	//	マーチングキューブス法で作ったポリゴンを表示するオブジェクト

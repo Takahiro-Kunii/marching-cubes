@@ -1,6 +1,6 @@
 class MarchingCubes {
     constructor(size, threshold) {
-		//  格子を resolution x resolution x resolution の立方体で組み立てる
+		//  格子を size x size x size の立方体で組み立てる
 		this.size = size;
 		//  1次元で用意するが、実際には3次元配列 [k][j][i] として扱う 
 		this.grid = new Float32Array(this.size * this.size * this.size);

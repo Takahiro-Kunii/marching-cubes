@@ -157,8 +157,8 @@ class MarchingCubes {
 
 	//	マーチングキューブスでボリュームをポリゴン化
 	render(renderer) {
-		let start = 1;
-		let end = this.size - 1;
+		let start = 1;                      //  法線計算時に -1 した接続点の値を使うので
+		let end = (this.size - 1) - 1 - 1;  //  法線計算時に +1 した接続点の値を使うので（立方体なので、自接続点に +1 も考慮する）
 		for (let k = start; k <= end; k++) {
 			for (let j = start; j <= end; j++) {
 				for (let i = start; i <= end; i++) {
